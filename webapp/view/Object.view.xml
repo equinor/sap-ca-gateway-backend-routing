@@ -1,0 +1,52 @@
+<mvc:View controllerName="com.equinor.sap.cross.sap-ca-gateway-backend-routing.controller.Object" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic">
+	<Page showNavButton="true" navButtonType="Back" navButtonPress="onNavBack">
+		<semantic:SemanticPage id="page" headerPinnable="false" toggleHeaderOnTitleClick="false" busy="{objectView>/busy}"
+			busyIndicatorDelay="{objectView>/delay}">
+			<semantic:titleHeading>
+				<Title text="{ServiceName}"/>
+			</semantic:titleHeading>
+			<semantic:headerContent>
+				<!--
+			<ObjectNumber numberUnit="{SrvIdentifier}"/>
+			-->
+				<ObjectNumber numberUnit="{parts:['SrvIdentifier'],formatter:'.formatter.decodeSlashEncoding'}"/>
+			</semantic:headerContent>
+			<semantic:content>
+				<Table id="lineItemsList" width="auto" items="{ToRoutingSet}" updateFinished="onListUpdateFinished"
+					noDataText="{worklistView>/tableNoDataText}">
+					<headerToolbar></headerToolbar>
+					<columns>
+						<Column id="tableColumnSystemAlias">
+							<Text text="{i18n>SystemAlias}" id="textSystemAlias"/>
+						</Column>
+						<Column id="tableColumnIsDefault">
+							<Text text="{i18n>IsDefault}" id="textIsDefault"/>
+						</Column>
+						<Column id="tableColumnIsActive">
+							<Text text="{i18n>IsActive}" id="textIsActive"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End" id="tableColumnAction">
+							<Text textAlign="Left" text="{i18n>Action}" id="textAction"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem>
+							<cells>
+								<ObjectIdentifier text="{SystemAlias}"/>
+								<Text text="{IsDefault}"/>
+								<ObjectStatus visible="{= ${IsActive} === 'X' ? true : false }" icon="sap-icon://status-positive" text="Active" state="Success"/>
+								<Button visible="{= ${IsActive} === '' ? true : false }"
+									text="{= ${IsActive} === '' &amp;&amp; ${IsDefault} === 'X' ? 'Reset' : 'Overrule' }" bindingContexts="{/Routing}"
+									press="overruleODataRouting"></Button>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</semantic:content>
+			<semantic:sendEmailAction>
+				<semantic:SendEmailAction id="shareEmail" press="onShareEmailPress"/>
+			</semantic:sendEmailAction>
+		</semantic:SemanticPage>
+	</Page>
+</mvc:View>

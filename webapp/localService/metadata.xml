@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+	<edmx:DataServices m:DataServiceVersion="2.0">
+		<Schema Namespace="ZCA_GATEWAY_SERVICE_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="Service" sap:content-version="1">
+				<Key><PropertyRef Name="SrvIdentifier"/></Key><Property Name="SrvIdentifier" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Identifier"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="ObjectName" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="Technical Name"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="ServiceName" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="External Name"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><NavigationProperty Name="ToRoutingSet" Relationship="ZCA_GATEWAY_SERVICE_SRV.ServiceRoutings" FromRole="FromRole_ServiceRoutings"
+					ToRole="ToRole_ServiceRoutings"/></EntityType>
+			<EntityType Name="Routing" sap:content-version="1">
+				<Key><PropertyRef Name="ServiceId"/><PropertyRef Name="UserRole"/><PropertyRef Name="HostName"/><PropertyRef Name="SystemAlias"/></Key><Property Name="IsActive" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Is active" sap:creatable="false"
+					sap:sortable="false"/><Property Name="ServiceId" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Identifier"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="UserRole" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="User Role" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="HostName" Type="Edm.String" Nullable="false" MaxLength="120" sap:unicode="false" sap:label="Host Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="SystemAlias" Type="Edm.String" Nullable="false" MaxLength="16" sap:unicode="false" sap:label="System Alias"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="IsDefault" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Default System"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="LastChanged" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="User Name"
+					sap:creatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="IsDefForMeta" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Metadata Default"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="IsOverruled" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Is overruled" sap:creatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="LastOverruled" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="User Name"
+					sap:creatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="UserAuthorization" sap:content-version="1">
+				<Key><PropertyRef Name="Activity"/></Key><Property Name="UserId" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="User Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="UserName" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Full Name" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Activity" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Activity" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Authorized" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Active" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<Association Name="ServiceRoutings" sap:content-version="1"><End Type="ZCA_GATEWAY_SERVICE_SRV.Service" Multiplicity="1" Role="FromRole_ServiceRoutings"/><End Type="ZCA_GATEWAY_SERVICE_SRV.Routing" Multiplicity="*" Role="ToRole_ServiceRoutings"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_ServiceRoutings"><PropertyRef Name="SrvIdentifier"/></Principal>
+					<Dependent Role="ToRole_ServiceRoutings"><PropertyRef Name="ServiceId"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="ZCA_GATEWAY_SERVICE_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx"><EntitySet Name="ServiceSet" EntityType="ZCA_GATEWAY_SERVICE_SRV.Service" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				sap:pageable="false" sap:content-version="1"/><EntitySet Name="RoutingSet" EntityType="ZCA_GATEWAY_SERVICE_SRV.Routing" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				sap:pageable="false" sap:content-version="1"/><EntitySet Name="UserAuthorizationSet" EntityType="ZCA_GATEWAY_SERVICE_SRV.UserAuthorization" sap:creatable="false" sap:updatable="false"
+				sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<AssociationSet Name="ServiceRoutingsSet" Association="ZCA_GATEWAY_SERVICE_SRV.ServiceRoutings" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"><End EntitySet="ServiceSet" Role="FromRole_ServiceRoutings"/><End EntitySet="RoutingSet" Role="ToRole_ServiceRoutings"/></AssociationSet>
+				<FunctionImport Name="OverRuleRouting" ReturnType="ZCA_GATEWAY_SERVICE_SRV.Routing" EntitySet="RoutingSet" m:HttpMethod="POST"
+					sap:action-for="ZCA_GATEWAY_SERVICE_SRV.Routing"><Parameter Name="SystemAlias" Type="Edm.String" Mode="In" MaxLength="16"/><Parameter Name="ServiceId" Type="Edm.String" Mode="In" MaxLength="40"/></FunctionImport>
+			</EntityContainer><atom:link rel="self"
+				href="https://webidecp-a94e15cb7.dispatcher.hana.ondemand.com/destinations/GW/sap/opu/odata/sap/ZCA_GATEWAY_SERVICE_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/><atom:link rel="latest-version"
+				href="https://webidecp-a94e15cb7.dispatcher.hana.ondemand.com/destinations/GW/sap/opu/odata/sap/ZCA_GATEWAY_SERVICE_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/></Schema>
+	</edmx:DataServices>
+</edmx:Edmx>

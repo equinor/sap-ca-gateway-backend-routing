@@ -1,0 +1,56 @@
+<mvc:View controllerName="com.equinor.sap.cross.sap-ca-gateway-backend-routing.controller.Worklist" xmlns="sap.m"
+	xmlns:layout="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.f.semantic">
+	<semantic:SemanticPage id="page" headerPinnable="false" toggleHeaderOnTitleClick="false">
+		<semantic:titleHeading>
+			<Title text="{i18n>worklistTitle}"/>
+		</semantic:titleHeading>
+		<semantic:content>
+			<Table id="table" width="auto" items="{ path: '/ServiceSet', sorter: { path: 'ServiceName', descending: false } }"
+				noDataText="{worklistView>/tableNoDataText}" busyIndicatorDelay="{worklistView>/tableBusyDelay}" growing="true" growingScrollToLoad="true"
+				updateFinished="onUpdateFinished">
+				<headerToolbar>
+					<Toolbar>
+						<Title id="tableHeader" text="{worklistView>/worklistTableTitle}"/>
+						<ToolbarSpacer/>
+						<SearchField id="searchField" tooltip="{i18n>worklistSearchTooltip}" search="onSearch" width="auto"></SearchField>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column id="tableColumnServiceName">
+						<Text text="{i18n>ServiceName}" id="textServiceName"/>
+					</Column>
+					<Column id="tableColumnSystemAlias">
+						<Text text="{i18n>SystemAlias}" id="textSystemAlias"/>
+					</Column>
+					<Column id="tableColumnOverruled">
+						<Text text="{i18n>Overruled}" id="textOverruled"/>
+					</Column>
+					<Column id="tableColumnTechnicalServiceName">
+						<Text text="{i18n>TechnicalServiceName}" id="textTechnicalServiceName"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem
+						type="{= ${worklistView>/authorizedUpdate} === 'X' ? 'Navigation' : 'Inactive' }"
+						press="onPress">
+						<cells>
+							<ObjectIdentifier title="{ServiceName}"/>
+							<layout:HorizontalLayout
+								content="{path: 'ToRoutingSet', templateShareable: true, filters: [{path: 'IsActive', operator: 'EQ', value1: 'X'}]}">
+								<Text text="{SystemAlias}"/>
+							</layout:HorizontalLayout>
+							<layout:HorizontalLayout
+								content="{path: 'ToRoutingSet', templateShareable: true, filters: [{path: 'IsActive', operator: 'EQ', value1: 'X'}]}">
+								<ObjectStatus visible="{IsOverruled}" icon="sap-icon://notification" state="Warning" text="Default routing overruled"/>
+							</layout:HorizontalLayout>
+							<ObjectNumber unit="{parts:['SrvIdentifier'],formatter:'.formatter.decodeSlashEncoding'}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press="onShareEmailPress"/>
+		</semantic:sendEmailAction>
+	</semantic:SemanticPage>
+</mvc:View>
